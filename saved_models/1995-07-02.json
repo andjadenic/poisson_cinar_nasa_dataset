@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "day": "1995-07-02",
+  "model": {
+    "class": "PoissonCINARp",
+    "p": 2,
+    "thinning_operator": "independent"
+  },
+  "parameters": {
+    "alpha": 0.5529354678561944,
+    "innovation_mean": 8.032135469372324,
+    "marginal_mean": 17.966389395409827,
+    "phi": [
+      0.7256523912859634,
+      0.2743476087140367
+    ]
+  },
+  "fit_statistics": {
+    "log_likelihood": -1044.5146297398444,
+    "AIC": 2095.029259479689,
+    "BIC": 2106.8655213055085,
+    "MSE": 13.86922029365485
+  },
+  "evaluation_metrics": {
+    "train": {
+      "observations": 286,
+      "MSE": 14.84728005516159,
+      "RMSE": 3.853216845073943,
+      "MAE": 3.035670578405488,
+      "AIC": 1590.5366204554557,
+      "BIC": 1601.5045958879152
+    },
+    "validation": {
+      "observations": 96,
+      "MSE": 13.670030210171289,
+      "RMSE": 3.6973003949058953,
+      "MAE": 3.063018051403869
+    },
+    "test": {
+      "observations": 97,
+      "MSE": 40.317954738005405,
+      "RMSE": 6.349642095268473,
+      "MAE": 4.973907712064093
+    }
+  }
+}

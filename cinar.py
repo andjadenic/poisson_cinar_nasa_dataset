@@ -13,6 +13,8 @@ identical.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Literal, Sequence
 
 import matplotlib.pyplot as plt
@@ -343,6 +345,64 @@ class PoissonCINARp:
         self.residuals_ = residuals
         self.optimization_result_ = best
         return self
+
+    def save_model(
+        self,
+        day: str,
+        train_metrics: dict[str, float | int],
+        validation_metrics: dict[str, float | int],
+        test_metrics: dict[str, float | int],
+        repository: str | Path = "saved_models",
+    ) -> Path:
+        """Save a fitted model and split-specific evaluation metrics as JSON.
+
+        The output is ``<repository>/<day>.json``. Model parameters and fit
+        statistics come from this fitted instance; train, validation, and test
+        metrics describe the external model-selection evaluation workflow.
+        """
+
+        output_directory = Path(repository)
+        output_directory.mkdir(parents=True, exist_ok=True)
+        output_path = output_directory / f"{day}.json"
+
+        def json_metrics(values: dict[str, float | int]) -> dict[str, float | int]:
+            return {
+                name: value.item() if isinstance(value, np.generic) else value
+                for name, value in values.items()
+            }
+
+        saved_model = {
+            "schema_version": 1,
+            "day": day,
+            "model": {
+                "class": self.__class__.__name__,
+                "p": self.p,
+                "thinning_operator": self.thinning_operator,
+            },
+            "parameters": {
+                "alpha": self.alpha_,
+                "innovation_mean": self.innovation_mean_,
+                "marginal_mean": self.marginal_mean_,
+                "phi": self.phi_.tolist(),
+            },
+            "fit_statistics": {
+                "log_likelihood": self.log_likelihood_,
+                "AIC": self.aic_,
+                "BIC": self.bic_,
+                "MSE": self.mse_,
+            },
+            "evaluation_metrics": {
+                "train": json_metrics(train_metrics),
+                "validation": json_metrics(validation_metrics),
+                "test": json_metrics(test_metrics),
+            },
+        }
+
+        with output_path.open("w", encoding="utf-8") as stream:
+            json.dump(saved_model, stream, indent=2)
+            stream.write("\n")
+
+        return output_path
 
     def _identical_last_thinning_means(self, data: np.ndarray) -> np.ndarray:
         state_values = data[: self.p].copy()
