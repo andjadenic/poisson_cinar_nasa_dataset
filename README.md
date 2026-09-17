@@ -75,9 +75,7 @@ $$
 Because an INAR response must be a nonnegative integer, the exploratory count-valued version is
 
 $$
-Z^{\mathrm{int}}_{d,m}
-=
-\max\left\{0,\operatorname{round}(Z_{d,m})\right\}.
+Z^{\mathrm{int}}_{d,m} = \max\left\{0,\operatorname{round}(Z_{d,m})\right\}.
 $$
 
 Both the original and integer-adjusted counts are retained, so model selection can be run with or without the estimated intraday seasonal component.
