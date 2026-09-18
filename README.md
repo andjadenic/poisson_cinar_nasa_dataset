@@ -63,22 +63,18 @@ Let $Y_{d,m}$ be the distinct host count on date $d=1 \ldots 36$ at within day m
 \qquad D=36
 ```
 
-Non-cyclic cubic spline is fitted to these 481 averages using hourly interior knots $1, 61, 121, \dots 481$. Daily seasonal component is approximated with $9$  cubic polynomials ($10:00 - 11:00, 11:00-12:00, \ldots, 17:00-18:00 $). 
+A non-cyclic cubic least-squares regression spline is fitted to the 481 averages using hourly knots $\boldsymbol{\kappa}=(1,61,121,181,241,301,361,421,481):$
 
 ```math
-\widehat{s}(m)=
-\begin{cases}
-a_1+b_1(m-\kappa_0)+c_1(m-\kappa_0)^2+d_1(m-\kappa_0)^3,
-& 1 \le m<61\\[4pt]
-a_2+b_2(m-\kappa_1)+c_2(m-\kappa_1)^2+d_2(m-\kappa_1)^3,
-& 61\le m< 121,\\
-\vdots & \vdots\\
-a_K+b_K(m-\kappa_{K-1})+c_K(m-\kappa_{K-1})^2+d_K(m-\kappa_{K-1})^3,
-& 421 \le m\le 481,
-\end{cases}
+\widehat{s}
+=
+\underset{s\in\mathcal{S}_3(\boldsymbol{\kappa})}{\mathrm{arg\,min}}
+\sum_{m=1}^{481}
+\left[\overline{Y}_m-s(m)\right]^2,
 ```
-where $m=1\ldots,481$ is the minute within the daily 10:00–18:00 window, and the knots satisfy
-$1=\kappa_0<\kappa_1<\cdots<\kappa_K=481.$
+
+where $\mathcal{S}_3(\boldsymbol{\kappa})$ contains the eight piecewise-cubic functions whose values, first derivatives, and second derivatives agree at each interior hourly knot. Thus, all eight hourly cubic pieces are estimated jointly to approximate the average profile rather than fitted separately, and no cyclic constraint joins 18:00 to 10:00.
+
 
 
 ![Average intraday distinct-host profile](figures/intraday-seasonality.png)
