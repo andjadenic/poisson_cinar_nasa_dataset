@@ -54,7 +54,7 @@ The host field is an identifier, not a verified person: multiple people can shar
 
 ## Intraday seasonality
 
-Let $Y_{d,m}$ be the distinct host count on date $d\in\{1,\ldots,36\}$ at within day minute $m\in\{1,\ldots,481\}$. The cross-day minute average is
+Let $Y_{d,m}$ be the distinct host count on date $d=1 \ldots 36$ at within day minute $m 1\ldots481$. The cross day minute average is
 
 ```math
 \overline{Y}_m
@@ -63,18 +63,18 @@ Let $Y_{d,m}$ be the distinct host count on date $d\in\{1,\ldots,36\}$ at within
 \qquad D=36
 ```
 
-Non-cyclic cubic spline is fitted to these 481 averages to each hour. Interday seasonal component is approximated with $k=$ interpolated cubic polynomials. 
+Non-cyclic cubic spline is fitted to these 481 averages using hourly interior knots $1, 61, 121, \dots 481$. Daily seasonal component is approximated with $k=9$ interpolated cubic polynomials. 
 
 ```math
 \widehat{s}(m)=
 \begin{cases}
 a_1+b_1(m-\kappa_0)+c_1(m-\kappa_0)^2+d_1(m-\kappa_0)^3,
-& \kappa_0\le m<\kappa_1,\\[4pt]
+& 1 \le m<61\\[4pt]
 a_2+b_2(m-\kappa_1)+c_2(m-\kappa_1)^2+d_2(m-\kappa_1)^3,
-& \kappa_1\le m<\kappa_2,\\
+& 61\le m< 121,\\
 \vdots & \vdots\\
 a_K+b_K(m-\kappa_{K-1})+c_K(m-\kappa_{K-1})^2+d_K(m-\kappa_{K-1})^3,
-& \kappa_{K-1}\le m\le \kappa_K,
+& 421 \le m\le 481,
 \end{cases}
 ```
 where $m=1\ldots,481$ is the minute within the daily 10:00–18:00 window, and the knots satisfy
