@@ -54,7 +54,7 @@ The host field is an identifier, not a verified person: multiple people can shar
 
 ## Intraday seasonality
 
-Let $Y_{d,m}$ be the distinct host count on date $d=1 \ldots 36$ at within day minute $m 1\ldots481$. The cross day minute average is
+Let $Y_{d,m}$ be the distinct host count on date $d=1 \ldots 36$ at within day minute $m=1\ldots481$. The cross day minute average is
 
 ```math
 \overline{Y}_m
@@ -63,7 +63,7 @@ Let $Y_{d,m}$ be the distinct host count on date $d=1 \ldots 36$ at within day m
 \qquad D=36
 ```
 
-Non-cyclic cubic spline is fitted to these 481 averages using hourly interior knots $1, 61, 121, \dots 481$. Daily seasonal component is approximated with $k=9$ interpolated cubic polynomials. 
+Non-cyclic cubic spline is fitted to these 481 averages using hourly interior knots $1, 61, 121, \dots 481$. Daily seasonal component is approximated with $9$  cubic polynomials ($10:00 - 11:00, 11:00-12:00, \ldots, 17:00-18:00 $). 
 
 ```math
 \widehat{s}(m)=
