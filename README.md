@@ -1,10 +1,12 @@
 # NASA HTTP Count Time Series with Poisson CINAR(p)
 
-This project builds, diagnoses, and forecasts minute-level count time series from the NASA Kennedy Space Center HTTP logs using **Poisson Combined Integer-Valued Autoregressive models**, or **CINAR(p)** models.
+This project builds, diagnoses, and forecasts minute-level count time series from the NASA Kennedy Space Center HTTP logs using **Poisson Combined Integer-Valued Autoregressive models**, or **CINAR(p)** model, proposed by Weiß, C. H. (2008) in the paper “The combined INAR(p) models for time series of counts.” Statistics & Probability Letters, 78, 1817–1822. https://doi.org/10.1016/j.spl.2008.01.036.
 
-The response is the number of distinct host identifiers observed by the server in each minute. The repository contains the complete workflow:
+The dataset consists of the number of distinct host identifiers observed by the server in each minute.
 
-- stream and aggregate the July-August 1995 NASA HTTP logs;
+The repository contains the complete workflow:
+
+- stream and aggregate the July-August 1995 NASA HTTP logs
 - construct complete daily 10:00-18:00 count series;
 - estimate and remove the common intraday seasonal pattern;
 - inspect count distributions, stationarity, ACF, and PACF;
