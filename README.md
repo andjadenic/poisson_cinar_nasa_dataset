@@ -6,11 +6,11 @@ The dataset consists of the number of distinct host identifiers observed by the 
 
 The repository contains the complete workflow:
 
-- stream and aggregate the July-August 1995 NASA HTTP logs
-- construct complete daily 10:00-18:00 count series;
-- estimate and remove the common intraday seasonal pattern;
-- inspect count distributions, stationarity, ACF, and PACF;
-- fit Poisson CINAR(p) models with independent or identical thinning;
+- transform the [open-source dataset NASA HTTP](https://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html)
+- construct and save complete daily 10:00-18:00 count series
+- estimate and save the dataset with removed intraday seasonal component
+- examine the absolute frequency histograms, stationarity, and empirical ACF and PACF plots across several randomly selected days
+- for a given day fit Poisson CINAR(p) models with independent or identical thinning, lag $p=1,2,...p_{max}$ on a data with or without seaslonal component
 - select the order and thinning structure using validation forecasts;
 - evaluate the selected model on an untouched test block; and
 - save fitted parameters and train/validation/test metrics as JSON.
