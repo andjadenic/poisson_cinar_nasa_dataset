@@ -17,15 +17,18 @@ The repository contains the complete workflow:
 
 ## Data
 
-The raw data is the public [NASA HTTP](https://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html) access logs for July and August 1995. A log record provides a host identifier, timestamp, HTTP request, response status, and response size.
+The raw data is the public [NASA HTTP](https://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html) access logs for [July](https://github.com/andjadenic/poisson_cinar_nasa_dataset/blob/main/data/NASA_access_log_Jul95.gz) and [August](https://github.com/andjadenic/poisson_cinar_nasa_dataset/blob/main/data/NASA_access_log_Aug95.gz) 1995. A log record provides a host identifier, timestamp, HTTP request, response status, and response size.
 
-For each minute $t$ in a raw dataset, let $B_t$ be the set of parsed requests and let $h(r)$ be the host recorded in request $r$. The modeled count is
+Raw dataset is downloaded and saved inside [data](https://github.com/andjadenic/poisson_cinar_nasa_dataset/tree/main/data) repository.
+
+For each recorded minute $t$ from $10:00$ to $18:00$ in a raw dataset, let $B_t$ be the set of parsed requests and let $h(r)$ be the host recorded in request $r$. [New dataset](https://github.com/andjadenic/poisson_cinar_nasa_dataset/blob/main/data/NASA_HTTP_minute_10_to_18.csv) is saved and used for modeling that consists of the number of distinct host strings observed during that minute:
+
 
 ```math
 Y_t = \left|\{h(r):r\in B_t\}\right|
 ```
 
-the number of distinct host strings observed during that minute. A host is counted at most once per minute, even if it makes multiple requests.
+A host is counted at most once per minute, even if it makes multiple requests.
 
 The analysis uses the inclusive daily window
 
@@ -45,7 +48,7 @@ observations per day. A date is retained only if all 481 server-log minutes are 
 - **17,316 minute-level observations**; and
 - separate time series for each date, with no artificial lag connecting one day to the next.
 
-The host field is an identifier, not a verified person: multiple people can share an address, and one person can appear under multiple addresses.
+The host field is an identifier, not a verified person: multiple people can share an address, and one person can appear under multiple addresses, but number of different persons using the website in a minute can be approximated using the number of unique hosts in that minute.
 
 ## Intraday seasonality
 
