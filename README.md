@@ -63,7 +63,22 @@ Let $Y_{d,m}$ be the distinct host count on date $d\in\{1,\ldots,36\}$ at within
 \qquad D=36
 ```
 
-A regular, non-cyclic cubic spline is fitted to these 481 averages. It is deliberately non-cyclic because 18:00 is not adjacent to 10:00 in the observed data.
+A regular, non-cyclic cubic spline is fitted to these 481 averages to each hour. Intrerday seasonal component is approximated with $k=$ interpolated cubic polynomials. in It is deliberately non-cyclic because 18:00 is not adjacent to 10:00 in the observed data.
+
+```math
+\widehat{s}(m)=
+\begin{cases}
+a_1+b_1(m-\kappa_0)+c_1(m-\kappa_0)^2+d_1(m-\kappa_0)^3,
+& \kappa_0\le m<\kappa_1,\\[4pt]
+a_2+b_2(m-\kappa_1)+c_2(m-\kappa_1)^2+d_2(m-\kappa_1)^3,
+& \kappa_1\le m<\kappa_2,\\
+\vdots & \vdots\\
+a_K+b_K(m-\kappa_{K-1})+c_K(m-\kappa_{K-1})^2+d_K(m-\kappa_{K-1})^3,
+& \kappa_{K-1}\le m\le \kappa_K,
+\end{cases}
+```
+
+
 
 ![Average intraday distinct-host profile](figures/intraday-seasonality.png)
 
