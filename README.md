@@ -17,9 +17,9 @@ The repository contains the complete workflow:
 
 ## Data
 
-The raw data are the public NASA HTTP access logs for July and August 1995. A log record provides a host identifier, timestamp, HTTP request, response status, and response size.
+The raw data is the public [NASA HTTP](https://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html) access logs for July and August 1995. A log record provides a host identifier, timestamp, HTTP request, response status, and response size.
 
-For minute $t$, let $B_t$ be the set of parsed requests and let $h(r)$ be the host recorded in request $r$. The modeled count is
+For each minute $t$ in a raw dataset, let $B_t$ be the set of parsed requests and let $h(r)$ be the host recorded in request $r$. The modeled count is
 
 ```math
 Y_t = \left|\{h(r):r\in B_t\}\right|
