@@ -42,17 +42,19 @@ which contains
 8\times60+1=481
 ```
 
-observations per day. A date is retained only if all 481 server-log minutes are present. This produces:
+observations per day.
 
-- **36 complete daily windows**;
-- **17,316 minute-level observations**; and
+A date is retained only if all 481 server-log minutes are present. This produces:
+
+- **36 complete daily windows**
+- **17,316 minute-level observations** and
 - separate time series for each date, with no artificial lag connecting one day to the next.
 
 The host field is an identifier, not a verified person: multiple people can share an address, and one person can appear under multiple addresses, but number of different persons using the website in a minute can be approximated using the number of unique hosts in that minute.
 
 ## Intraday seasonality
 
-Let $Y_{d,m}$ be the distinct-host count on date $d$ at within-day minute $m\in\{1,\ldots,481\}$. The cross-day minute average is
+Let $Y_{d,m}$ be the distinct host count on date $d\in\{1,\ldots,36\}$ at within day minute $m\in\{1,\ldots,481\}$. The cross-day minute average is
 
 ```math
 \overline{Y}_m
