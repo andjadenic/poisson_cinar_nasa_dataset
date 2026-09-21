@@ -21,7 +21,11 @@ The raw data is the public [NASA HTTP](https://ita.ee.lbl.gov/html/contrib/NASA-
 
 Raw dataset is downloaded and saved inside [data](https://github.com/andjadenic/poisson_cinar_nasa_dataset/tree/main/data) repository.
 
+<<<<<<< HEAD
 For each recorded minute $t$ from $10:00$ to $18:00$ in a raw dataset, let $B_t$ be the set of parsed requests and let $h(r)$ be the host recorded in request $r$. [New dataset](https://github.com/andjadenic/poisson_cinar_nasa_dataset/blob/main/data/NASA_HTTP_minute_10_to_18.csv) is saved and used for modeling that consists of the number of distinct host strings observed during that minute:
+=======
+$$Y_t = \left|\{h(r):r\in B_t\}\right|$$
+>>>>>>> a10100d (rewrite readme)
 
 
 ```math
@@ -32,6 +36,7 @@ A host is counted at most once per minute, even if it makes multiple requests.
 
 The analysis uses the inclusive daily window
 
+<<<<<<< HEAD
 ```math
 10{:}00,10{:}01,\ldots,17{:}59,18{:}00
 ```
@@ -41,6 +46,13 @@ which contains
 ```math
 8\times60+1=481
 ```
+=======
+$$10{:}00,10{:}01,\ldots,17{:}59,18{:}00$$
+
+which contains
+
+$$8\times60+1=481$$
+>>>>>>> a10100d (rewrite readme)
 
 observations per day.
 
@@ -75,12 +87,17 @@ A non-cyclic cubic least-squares regression spline is fitted to the 481 averages
 
 where $\mathcal{S}_3(\boldsymbol{\kappa})$ contains the eight piecewise-cubic functions whose values, first derivatives, and second derivatives agree at each interior hourly knot. Thus, all eight hourly cubic pieces are estimated jointly to approximate the average profile rather than fitted separately, and no cyclic constraint joins 18:00 to 10:00.
 
+<<<<<<< HEAD
+=======
+$$\overline{Y}_m=\frac{1}{D}\sum_{d=1}^{D}Y_{d,m}, \qquad D=36$$
+>>>>>>> a10100d (rewrite readme)
 
 
 ![Average intraday distinct-host profile](figures/intraday-seasonality.png)
 
 If the fitted spline is $\widehat{s}_m$, its overall reference level and centered seasonal component are
 
+<<<<<<< HEAD
 ```math
 \begin{aligned}
 \overline{s}
@@ -105,6 +122,17 @@ Z^{\mathrm{int}}_{d,m}
 =
 \max\!\left\{0,\mathrm{round}\!\left(Z_{d,m}\right)\right\}
 ```
+=======
+$$\overline{s}=\frac{1}{481}\sum_{m=1}^{481}\widehat{s}_m, \qquad \widehat{c}_m=\widehat{s}_m-\overline{s}$$
+
+The continuous seasonally adjusted series is
+
+$$Z_{d,m}=Y_{d,m}-\widehat{c}_m$$
+
+Because an INAR response must be a nonnegative integer, the exploratory count-valued version is
+
+$$Z^{\mathrm{int}}_{d,m}=\max\left\{0,\mathrm{round}(Z_{d,m})\right\}$$
+>>>>>>> a10100d (rewrite readme)
 
 Both the original and integer-adjusted counts are retained, so model selection can be run with or without the estimated intraday seasonal component.
 
@@ -112,6 +140,7 @@ Both the original and integer-adjusted counts are retained, so model selection c
 
 The model follows Weiß (2008):
 
+<<<<<<< HEAD
 ```math
 X_t
 =
@@ -162,19 +191,47 @@ so that
 \sim
 \mathrm{Binomial}(x,\alpha)
 ```
+=======
+$$X_t=\sum_{i=1}^{p}D_{t,i}\left(\alpha\circ X_{t-i}\right)+\varepsilon_t$$
+
+The components are:
+
+$$\left(D_{t,1},\ldots,D_{t,p}\right)\sim\mathrm{Multinomial}\left(1;\phi_1,\ldots,\phi_p\right)$$
+
+where
+
+$$\phi_i\ge 0, \qquad \sum_{i=1}^{p}\phi_i=1$$
+
+and Poisson innovations
+
+$$\varepsilon_t\sim\mathrm{Poisson}(\lambda_\varepsilon)$$
+
+The binomial thinning operator is
+
+$$\alpha\circ X=\sum_{j=1}^{X}B_j, \qquad B_j\overset{\mathrm{iid}}{\sim}\mathrm{Bernoulli}(\alpha)$$
+
+so that
+
+$$\alpha\circ X\mid X=x\sim\mathrm{Binomial}(x,\alpha)$$
+>>>>>>> a10100d (rewrite readme)
 
 At every time step, one of the previous $p$ observations is selected according to $\boldsymbol\phi$, thinned, and combined with a new Poisson innovation.
 
 For a stationary process, the marginal mean is
 
+<<<<<<< HEAD
 ```math
 \mu_X=\frac{\lambda_\varepsilon}{1-\alpha}
 ```
+=======
+$$\mu_X=\frac{\lambda_\varepsilon}{1-\alpha}$$
+>>>>>>> a10100d (rewrite readme)
 
 ### Independent thinning
 
 Every later use of an observation receives a newly sampled binomial thinning result. The conditional transition probability is
 
+<<<<<<< HEAD
 ```math
 \begin{aligned}
 \Pr\!\left(X_t=x_t\mid\mathcal{F}_{t-1}\right)
@@ -195,21 +252,33 @@ Its conditional expectation is
 \lambda_\varepsilon
 +\alpha\sum_{i=1}^{p}\phi_iX_{t-i}
 ```
+=======
+$$\Pr(X_t=x_t\mid\mathcal{F}_{t-1})=\sum_{i=1}^{p}\phi_i\sum_{y=0}^{\min(x_t,x_{t-i})}\mathrm{Bin}(y;x_{t-i},\alpha)\,\mathrm{Pois}(x_t-y;\lambda_\varepsilon)$$
+
+Its conditional expectation is
+
+$$E(X_t\mid\mathcal{F}_{t-1})=\lambda_\varepsilon+\alpha\sum_{i=1}^{p}\phi_iX_{t-i}$$
+>>>>>>> a10100d (rewrite readme)
 
 ### Identical thinning
 
 Each observation $X_s$ receives one latent thinning result
 
+<<<<<<< HEAD
 ```math
 Z_s\mid X_s=x_s
 \sim
 \mathrm{Binomial}(x_s,\alpha)
 ```
+=======
+$$Z_s\mid X_s=x_s\sim\mathrm{Binomial}(x_s,\alpha)$$
+>>>>>>> a10100d (rewrite readme)
 
 and that same $Z_s$ is reused whenever $X_s$ is selected as a lag later. This sharing creates additional dependence between future observations.
 
 The implementation evaluates the exact conditional likelihood with a latent-state filter over
 
+<<<<<<< HEAD
 ```math
 \left(Z_{t-p},\ldots,Z_{t-1}\right)
 ```
@@ -223,6 +292,13 @@ g_t(z)
 \phi_i\,
 \mathrm{Pois}\!\left(x_t-z_{t-i};\lambda_\varepsilon\right)
 ```
+=======
+$$\left(Z_{t-p},\ldots,Z_{t-1}\right)$$
+
+For latent state $z$, the observation factor is
+
+$$g_t(z)=\sum_{i=1}^{p}\phi_i\,\mathrm{Pois}(x_t-z_{t-i};\lambda_\varepsilon)$$
+>>>>>>> a10100d (rewrite readme)
 
 The filter multiplies the current state probabilities by $g_t(z)$, normalizes them, removes the oldest latent thinning, and introduces $Z_t\mid X_t$. This is more computationally expensive than independent thinning, especially for large counts or large $p$.
 
@@ -230,6 +306,7 @@ The filter multiplies the current state probabilities by $g_t(z)$, normalizes th
 
 `PoissonCINARp.fit()` uses conditional maximum likelihood. For observations $x_0,\ldots,x_{n-1}$, it maximizes
 
+<<<<<<< HEAD
 ```math
 \ell(\theta)
 =
@@ -237,11 +314,15 @@ The filter multiplies the current state probabilities by $g_t(z)$, normalizes th
 \log
 \Pr_\theta\!\left(X_t=x_t\mid\mathcal{F}_{t-1}\right)
 ```
+=======
+$$\ell(\theta)=\sum_{t=p}^{n-1}\log\Pr_\theta(X_t=x_t\mid\mathcal{F}_{t-1})$$
+>>>>>>> a10100d (rewrite readme)
 
 conditional on the first $p$ observations.
 
 The parameter restrictions are enforced through transformations:
 
+<<<<<<< HEAD
 ```math
 \begin{aligned}
 \alpha
@@ -258,11 +339,19 @@ and a softmax transformation for $\boldsymbol\phi$. Since only $p-1$ lag probabi
 ```math
 k=p+1
 ```
+=======
+$$\alpha=\frac{1}{1+e^{-\eta_\alpha}}, \qquad \lambda_\varepsilon=e^{\eta_\lambda}$$
+
+and a softmax transformation for $\boldsymbol\phi$. Since only $p-1$ lag probabilities are free, the model has
+
+$$k=p+1$$
+>>>>>>> a10100d (rewrite readme)
 
 estimated parameters. The optimizer uses several correlation-informed starting points and L-BFGS-B minimization of the negative log-likelihood.
 
 The fitted model reports
 
+<<<<<<< HEAD
 ```math
 \mathrm{AIC}
 =
@@ -284,6 +373,15 @@ and one-step in-sample mean squared error
 \sum_{t=p}^{n-1}
 \left(x_t-\widehat{x}_t\right)^2
 ```
+=======
+$$\mathrm{AIC}=2k-2\widehat{\ell}$$
+
+$$\mathrm{BIC}=k\log(n-p)-2\widehat{\ell}$$
+
+and one-step in-sample mean squared error
+
+$$\mathrm{MSE}=\frac{1}{n-p}\sum_{t=p}^{n-1}\left(x_t-\widehat{x}_t\right)^2$$
+>>>>>>> a10100d (rewrite readme)
 
 ## Model-selection workflow
 
@@ -299,6 +397,7 @@ The split is never randomized. The training ACF and PACF are calculated before f
 
 Every combination of candidate $p$ and thinning operator is fitted using training data only. Each candidate produces a recursive forecast across the complete validation block and is ranked by validation MSE:
 
+<<<<<<< HEAD
 ```math
 \mathrm{MSE}_{\mathrm{validation}}
 =
@@ -322,6 +421,17 @@ and
 \sum_{t=1}^{n}
 \left|x_t-\widehat{x}_t\right|
 ```
+=======
+$$\mathrm{MSE}_{\mathrm{validation}}=\frac{1}{n_v}\sum_{h=1}^{n_v}\left(x_{T+h}-\widehat{x}_{T+h\mid T}\right)^2$$
+
+The selected specification is refitted on training plus validation observations and evaluated once on the untouched test block. In addition to MSE, the notebooks report
+
+$$\mathrm{RMSE}=\sqrt{\mathrm{MSE}}$$
+
+and
+
+$$\mathrm{MAE}=\frac{1}{n}\sum_{t=1}^{n}\left|x_t-\widehat{x}_t\right|$$
+>>>>>>> a10100d (rewrite readme)
 
 ## Default example
 
