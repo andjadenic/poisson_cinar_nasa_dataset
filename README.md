@@ -21,7 +21,13 @@ The raw data are the public [NASA HTTP](https://ita.ee.lbl.gov/html/contrib/NASA
 
 The raw files are stored in the [`data`](https://github.com/andjadenic/poisson_cinar_nasa_dataset/tree/main/data) directory.
 
+<<<<<<< HEAD
 For each recorded minute $t$ from $10{:}00$ to $18{:}00$, let $B_t$ be the set of parsed requests and let $h(r)$ be the host recorded in request $r$. The [derived dataset](https://github.com/andjadenic/poisson_cinar_nasa_dataset/blob/main/data/NASA_HTTP_minute_10_to_18.csv) records the number of distinct host strings observed during that minute:
+=======
+```math
+Y_t = \left|\{h(r):r\in B_t\}\right|
+```
+>>>>>>> 30c6d2a (readme update 2)
 
 ```math
 Y_t = \left|\{h(r):r\in B_t\}\right|
@@ -56,10 +62,14 @@ The host field is an identifier, not a verified person: multiple people can shar
 Let $Y_{d,m}$ be the distinct-host count on date $d=1,\ldots,36$ at within-day minute $m=1,\ldots,481$. The cross-day minute average is
 
 ```math
+<<<<<<< HEAD
 \overline{Y}_m
 =
 \frac{1}{D}\sum_{d=1}^{D}Y_{d,m},
 \qquad D=36
+=======
+\overline{Y}_m=\frac{1}{D}\sum_{d=1}^{D}Y_{d,m}, \qquad D=36
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 A non-cyclic cubic least-squares regression spline is fitted to the 481 averages using hourly knots $\boldsymbol{\kappa}=(1,61,121,181,241,301,361,421,481)$:
@@ -79,6 +89,7 @@ where $\mathcal{S}_3(\boldsymbol{\kappa})$ contains the eight piecewise-cubic fu
 If the fitted spline is $\widehat{s}_m$, its overall reference level and centered seasonal component are
 
 ```math
+<<<<<<< HEAD
 \begin{aligned}
 \overline{s}
 &=
@@ -87,6 +98,9 @@ If the fitted spline is $\widehat{s}_m$, its overall reference level and centere
 &=
 \widehat{s}_m-\overline{s}.
 \end{aligned}
+=======
+\overline{s}=\frac{1}{481}\sum_{m=1}^{481}\widehat{s}_m, \qquad \widehat{c}_m=\widehat{s}_m-\overline{s}
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 The continuous seasonally adjusted series is
@@ -98,9 +112,13 @@ Z_{d,m}=Y_{d,m}-\widehat{c}_m
 Because an INAR response must be a nonnegative integer, the exploratory count-valued version is
 
 ```math
+<<<<<<< HEAD
 Z^{\mathrm{int}}_{d,m}
 =
 \max\!\left\{0,\mathrm{round}\!\left(Z_{d,m}\right)\right\}
+=======
+Z^{\mathrm{int}}_{d,m}=\max\left\{0,\mathrm{round}(Z_{d,m})\right\}
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 Both the original and integer-adjusted counts are retained, so model selection can be run with or without the estimated intraday seasonal component.
@@ -110,27 +128,39 @@ Both the original and integer-adjusted counts are retained, so model selection c
 The model follows Weiß (2008):
 
 ```math
+<<<<<<< HEAD
 X_t
 =
 \sum_{i=1}^{p}
 D_{t,i}\!\left(\alpha\circ X_{t-i}\right)
 +\varepsilon_t
+=======
+X_t=\sum_{i=1}^{p}D_{t,i}\left(\alpha\circ X_{t-i}\right)+\varepsilon_t
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 The components are:
 
 ```math
+<<<<<<< HEAD
 \left(D_{t,1},\ldots,D_{t,p}\right)
 \sim
 \mathrm{Multinomial}\!\left(1;\phi_1,\ldots,\phi_p\right)
+=======
+\left(D_{t,1},\ldots,D_{t,p}\right)\sim\mathrm{Multinomial}\left(1;\phi_1,\ldots,\phi_p\right)
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 where
 
 ```math
+<<<<<<< HEAD
 \phi_i\ge 0,
 \qquad
 \sum_{i=1}^{p}\phi_i=1
+=======
+\phi_i\ge 0, \qquad \sum_{i=1}^{p}\phi_i=1
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 and Poisson innovations
@@ -142,6 +172,7 @@ and Poisson innovations
 The binomial thinning operator is
 
 ```math
+<<<<<<< HEAD
 \begin{aligned}
 \alpha\circ X
 &=
@@ -150,14 +181,21 @@ B_j
 &\overset{\mathrm{iid}}{\sim}
 \mathrm{Bernoulli}(\alpha).
 \end{aligned}
+=======
+\alpha\circ X=\sum_{j=1}^{X}B_j, \qquad B_j\overset{\mathrm{iid}}{\sim}\mathrm{Bernoulli}(\alpha)
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 so that
 
 ```math
+<<<<<<< HEAD
 \alpha\circ X\mid X=x
 \sim
 \mathrm{Binomial}(x,\alpha)
+=======
+\alpha\circ X\mid X=x\sim\mathrm{Binomial}(x,\alpha)
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 At every time step, one of the previous $p$ observations is selected according to $\boldsymbol\phi$, thinned, and combined with a new Poisson innovation.
@@ -173,6 +211,7 @@ For a stationary process, the marginal mean is
 Every later use of an observation receives a newly sampled binomial thinning result. The conditional transition probability is
 
 ```math
+<<<<<<< HEAD
 \begin{aligned}
 \Pr\!\left(X_t=x_t\mid\mathcal{F}_{t-1}\right)
 &=
@@ -182,15 +221,22 @@ Every later use of an observation receives a newly sampled binomial thinning res
 &\qquad{}\times
 \mathrm{Pois}\!\left(x_t-y;\lambda_\varepsilon\right).
 \end{aligned}
+=======
+\Pr(X_t=x_t\mid\mathcal{F}_{t-1})=\sum_{i=1}^{p}\phi_i\sum_{y=0}^{\min(x_t,x_{t-i})}\mathrm{Bin}(y;x_{t-i},\alpha)\,\mathrm{Pois}(x_t-y;\lambda_\varepsilon)
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 Its conditional expectation is
 
 ```math
+<<<<<<< HEAD
 \mathbb{E}\!\left[X_t\mid\mathcal{F}_{t-1}\right]
 =
 \lambda_\varepsilon
 +\alpha\sum_{i=1}^{p}\phi_iX_{t-i}
+=======
+E(X_t\mid\mathcal{F}_{t-1})=\lambda_\varepsilon+\alpha\sum_{i=1}^{p}\phi_iX_{t-i}
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 ### Identical thinning
@@ -198,9 +244,13 @@ Its conditional expectation is
 Each observation $X_s$ receives one latent thinning result
 
 ```math
+<<<<<<< HEAD
 Z_s\mid X_s=x_s
 \sim
 \mathrm{Binomial}(x_s,\alpha)
+=======
+Z_s\mid X_s=x_s\sim\mathrm{Binomial}(x_s,\alpha)
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 and that same $Z_s$ is reused whenever $X_s$ is selected as a lag later. This sharing creates additional dependence between future observations.
@@ -214,11 +264,15 @@ The implementation evaluates the exact conditional likelihood with a latent-stat
 For latent state $z$, the observation factor is
 
 ```math
+<<<<<<< HEAD
 g_t(z)
 =
 \sum_{i=1}^{p}
 \phi_i\,
 \mathrm{Pois}\!\left(x_t-z_{t-i};\lambda_\varepsilon\right)
+=======
+g_t(z)=\sum_{i=1}^{p}\phi_i\,\mathrm{Pois}(x_t-z_{t-i};\lambda_\varepsilon)
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 The filter multiplies the current state probabilities by $g_t(z)$, normalizes them, removes the oldest latent thinning, and introduces $Z_t\mid X_t$. This is more computationally expensive than independent thinning, especially for large counts or large $p$.
@@ -228,11 +282,15 @@ The filter multiplies the current state probabilities by $g_t(z)$, normalizes th
 `PoissonCINARp.fit()` uses conditional maximum likelihood. For observations $x_0,\ldots,x_{n-1}$, it maximizes
 
 ```math
+<<<<<<< HEAD
 \ell(\theta)
 =
 \sum_{t=p}^{n-1}
 \log
 \Pr_\theta\!\left(X_t=x_t\mid\mathcal{F}_{t-1}\right)
+=======
+\ell(\theta)=\sum_{t=p}^{n-1}\log\Pr_\theta(X_t=x_t\mid\mathcal{F}_{t-1})
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 conditional on the first $p$ observations.
@@ -240,6 +298,7 @@ conditional on the first $p$ observations.
 The parameter restrictions are enforced through transformations:
 
 ```math
+<<<<<<< HEAD
 \begin{aligned}
 \alpha
 &=
@@ -248,6 +307,9 @@ The parameter restrictions are enforced through transformations:
 &=
 e^{\eta_\lambda}.
 \end{aligned}
+=======
+\alpha=\frac{1}{1+e^{-\eta_\alpha}}, \qquad \lambda_\varepsilon=e^{\eta_\lambda}
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 and a softmax transformation for $\boldsymbol\phi$. Since only $p-1$ lag probabilities are free, the model has
@@ -261,6 +323,7 @@ estimated parameters. The optimizer uses several correlation-informed starting p
 The fitted model reports
 
 ```math
+<<<<<<< HEAD
 \mathrm{AIC}
 =
 2k-2\widehat{\ell}
@@ -270,16 +333,27 @@ The fitted model reports
 \mathrm{BIC}
 =
 k\log(n-p)-2\widehat{\ell}
+=======
+\mathrm{AIC}=2k-2\widehat{\ell}
+```
+
+```math
+\mathrm{BIC}=k\log(n-p)-2\widehat{\ell}
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 and one-step in-sample mean squared error
 
 ```math
+<<<<<<< HEAD
 \mathrm{MSE}
 =
 \frac{1}{n-p}
 \sum_{t=p}^{n-1}
 \left(x_t-\widehat{x}_t\right)^2
+=======
+\mathrm{MSE}=\frac{1}{n-p}\sum_{t=p}^{n-1}\left(x_t-\widehat{x}_t\right)^2
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 ## Model-selection workflow
@@ -297,11 +371,15 @@ The split is never randomized. The training ACF and PACF are calculated before f
 Every combination of candidate $p$ and thinning operator is fitted using training data only. Each candidate produces a recursive forecast across the complete validation block and is ranked by validation MSE:
 
 ```math
+<<<<<<< HEAD
 \mathrm{MSE}_{\mathrm{validation}}
 =
 \frac{1}{n_v}
 \sum_{h=1}^{n_v}
 \left(x_{T+h}-\widehat{x}_{T+h\mid T}\right)^2
+=======
+\mathrm{MSE}_{\mathrm{validation}}=\frac{1}{n_v}\sum_{h=1}^{n_v}\left(x_{T+h}-\widehat{x}_{T+h\mid T}\right)^2
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 The selected specification is refitted on training plus validation observations and evaluated once on the untouched test block. In addition to MSE, the notebooks report
@@ -313,11 +391,15 @@ The selected specification is refitted on training plus validation observations 
 and
 
 ```math
+<<<<<<< HEAD
 \mathrm{MAE}
 =
 \frac{1}{n}
 \sum_{t=1}^{n}
 \left|x_t-\widehat{x}_t\right|
+=======
+\mathrm{MAE}=\frac{1}{n}\sum_{t=1}^{n}\left|x_t-\widehat{x}_t\right|
+>>>>>>> 30c6d2a (readme update 2)
 ```
 
 ## Default example
