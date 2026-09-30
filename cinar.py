@@ -458,6 +458,37 @@ class PoissonCINARp:
 
         return predictions
 
+    def predict_one_step(
+        self,
+        observations: Sequence[int] | np.ndarray,
+    ) -> np.ndarray:
+        """Predict each observation from its preceding observed history.
+
+        The model parameters remain fixed at their fitted values. Unlike
+        :meth:`predict`, each prediction conditions on the actual observations
+        preceding that time, so this method can extend one-step predictions
+        through a holdout sample without refitting the model on that sample.
+        The first ``p`` values are ``nan`` because their lag histories are not
+        available within ``observations``.
+        """
+
+        data = np.asarray(observations, dtype=np.int64)
+        if self.thinning_operator == "independent":
+            return self._independent_fitted_values(
+                data,
+                self.alpha_,
+                self.innovation_mean_,
+                self.phi_,
+            )
+
+        _, predictions, _ = self._identical_filter(
+            data,
+            self.alpha_,
+            self.innovation_mean_,
+            self.phi_,
+        )
+        return predictions
+
     def plot(
         self,
         observations: Sequence[int] | np.ndarray | None = None,
@@ -469,20 +500,8 @@ class PoissonCINARp:
         data = self.data_ if observations is None else np.asarray(observations)
         if observations is None:
             fitted = self.fitted_values_
-        elif self.thinning_operator == "independent":
-            fitted = self._independent_fitted_values(
-                data,
-                self.alpha_,
-                self.innovation_mean_,
-                self.phi_,
-            )
         else:
-            _, fitted, _ = self._identical_filter(
-                data,
-                self.alpha_,
-                self.innovation_mean_,
-                self.phi_,
-            )
+            fitted = self.predict_one_step(data)
 
         if ax is None:
             _, ax = plt.subplots(figsize=(10, 5))
